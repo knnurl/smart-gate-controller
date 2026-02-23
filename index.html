@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GATE CTRL</title>
+<title>KAPI KONTROL</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"></script>
@@ -515,165 +515,148 @@
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════
-     CONNECT SCREEN
-════════════════════════════════════════════════════ -->
 <div id="connect-screen">
   <div class="connect-box">
-    <div class="connect-logo">Gate Ctrl</div>
-    <div class="connect-sub">SECURE REMOTE ACCESS</div>
+    <div class="connect-logo">Kapı Kontrol</div>
+    <div class="connect-sub">GÜVENLİ UZAKTAN ERİŞİM</div>
 
-    <label class="field-label" for="f-host">HiveMQ Cluster Host</label>
+    <label class="field-label" for="f-host">HiveMQ Sunucusu</label>
     <input class="field-input" id="f-host" type="text"
            placeholder="abc123.s1.eu.hivemq.cloud" autocomplete="off" spellcheck="false">
 
-    <label class="field-label" for="f-user">Username</label>
+    <label class="field-label" for="f-user">Kullanıcı Adı</label>
     <input class="field-input" id="f-user" type="text"
            placeholder="gate-app" autocomplete="off">
 
-    <label class="field-label" for="f-pass">Password</label>
+    <label class="field-label" for="f-pass">Şifre</label>
     <input class="field-input" id="f-pass" type="password"
            placeholder="••••••••••••" autocomplete="current-password">
 
     <label class="connect-remember">
       <input type="checkbox" id="f-remember" checked>
-      Remember credentials in this browser
+      Bilgileri bu tarayıcıda hatırla
     </label>
 
     <button class="connect-btn" onclick="doConnect()">
-      CONNECT <span class="blink">_</span>
+      BAĞLAN <span class="blink">_</span>
     </button>
     <div class="connect-error" id="connect-error"></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════
-     MAIN APP
-════════════════════════════════════════════════════ -->
 <div id="app">
 
-  <!-- Header -->
   <div class="header">
     <div>
-      <div class="header-title">Gate Ctrl</div>
+      <div class="header-title">Kapı Kontrol</div>
       <div class="header-sub" id="header-host">—</div>
     </div>
     <div class="conn-pill">
       <div class="conn-dot" id="conn-dot"></div>
-      <span id="conn-label">OFFLINE</span>
+      <span id="conn-label">ÇEVRİMDIŞI</span>
     </div>
   </div>
 
-  <!-- Gate status -->
-  <div class="status-panel" id="status-panel" data-state="UNKNOWN">
-    <div class="status-label">// GATE STATUS</div>
-    <div class="state-value unknown" id="state-display">UNKNOWN</div>
+  <div class="status-panel" id="status-panel" data-state="BİLİNMİYOR">
+    <div class="status-label">// KAPI DURUMU</div>
+    <div class="state-value unknown" id="state-display">BİLİNMİYOR</div>
     <div class="status-meta">
-      <div class="meta-item">RSSI<span id="hb-rssi">—</span></div>
-      <div class="meta-item">UPTIME<span id="hb-uptime">—</span></div>
-      <div class="meta-item">FW<span id="hb-fw">—</span></div>
-      <div class="meta-item">AC<span id="hb-ac">—</span></div>
+      <div class="meta-item">SİNYAL<span id="hb-rssi">—</span></div>
+      <div class="meta-item">SÜRE<span id="hb-uptime">—</span></div>
+      <div class="meta-item">YAZILIM<span id="hb-fw">—</span></div>
+      <div class="meta-item">OTO.<span id="hb-ac">—</span></div>
     </div>
     <div class="travel-bar" id="travel-bar">
       <div class="travel-fill" id="travel-fill"></div>
     </div>
   </div>
 
-  <!-- Controls -->
   <div class="controls">
     <button class="ctrl-btn open-btn"  onclick="sendCmd('open')">
-      <span class="btn-icon">▲</span>OPEN
+      <span class="btn-icon">▲</span>AÇ
     </button>
     <button class="ctrl-btn stop-btn"  onclick="sendCmd('stop')">
-      <span class="btn-icon">■</span>STOP
+      <span class="btn-icon">■</span>DUR
     </button>
     <button class="ctrl-btn close-btn" onclick="sendCmd('close')">
-      <span class="btn-icon">▼</span>CLOSE
+      <span class="btn-icon">▼</span>KAPAT
     </button>
   </div>
 
-  <!-- System info -->
   <div class="card">
-    <div class="card-header">// SYSTEM</div>
+    <div class="card-header">// SİSTEM DURUMU</div>
     <div class="card-body">
       <div class="stat-row"><span class="stat-key">IP</span>       <span class="stat-val" id="hb-ip">—</span></div>
-      <div class="stat-row"><span class="stat-key">SIGNAL</span>   <span class="stat-val" id="sys-rssi">—</span></div>
-      <div class="stat-row"><span class="stat-key">UPTIME</span>   <span class="stat-val" id="sys-uptime">—</span></div>
-      <div class="stat-row"><span class="stat-key">FIRMWARE</span> <span class="stat-val" id="sys-fw">—</span></div>
-      <div class="stat-row"><span class="stat-key">AUTO-CLOSE</span><span class="stat-val" id="sys-ac">—</span></div>
+      <div class="stat-row"><span class="stat-key">SİNYAL</span>   <span class="stat-val" id="sys-rssi">—</span></div>
+      <div class="stat-row"><span class="stat-key">ÇALIŞMA SÜRESİ</span>   <span class="stat-val" id="sys-uptime">—</span></div>
+      <div class="stat-row"><span class="stat-key">YAZILIM SÜRÜMÜ</span> <span class="stat-val" id="sys-fw">—</span></div>
+      <div class="stat-row"><span class="stat-key">OTO-KAPANMA</span><span class="stat-val" id="sys-ac">—</span></div>
     </div>
   </div>
 
-  <!-- Auto-close timer -->
   <div class="card">
-    <div class="card-header">// AUTO-CLOSE TIMER</div>
+    <div class="card-header">// OTOMATİK KAPANMA ZAMANLAYICISI</div>
     <div class="card-body">
       <div style="font-size:0.72rem;color:var(--muted);margin-bottom:10px;letter-spacing:0.06em">
-        Seconds after gate fully opens. Set 0 to disable.
+        Kapı tam açıldıktan sonraki saniye. Kapatmak için 0 yapın.
       </div>
       <div class="inline-form">
         <input class="field-input" id="ac-input" type="number"
                min="0" max="3600" placeholder="30">
-        <button class="small-btn" onclick="setAutoClose()">SAVE</button>
+        <button class="small-btn" onclick="setAutoClose()">KAYDET</button>
       </div>
     </div>
   </div>
 
-  <!-- ANPR whitelist -->
   <div class="card">
     <div class="card-header">
-      // ANPR WHITELIST
-      <span id="plate-count" style="color:var(--amber)">0 PLATES</span>
+      // PLAKA BEYAZ LİSTESİ
+      <span id="plate-count" style="color:var(--amber)">0 PLAKA</span>
     </div>
     <div class="card-body">
       <div class="inline-form" style="margin-bottom:12px">
         <input class="field-input" id="plate-input" type="text"
-               placeholder="AB12CDE" maxlength="12"
+               placeholder="34ABC123" maxlength="12"
                style="text-transform:uppercase"
                onkeydown="if(event.key==='Enter')addPlate()">
-        <button class="small-btn" onclick="addPlate()">+ ADD</button>
+        <button class="small-btn" onclick="addPlate()">+ EKLE</button>
       </div>
       <div id="plate-list"></div>
     </div>
   </div>
 
-  <!-- Event log -->
   <div class="card">
     <div class="card-header">
-      // EVENT LOG
+      // OLAY GÜNLÜĞÜ
       <span onclick="clearLog()"
             style="cursor:pointer;color:var(--muted);font-size:0.65rem;letter-spacing:0.1em">
-        CLEAR
+        TEMİZLE
       </span>
     </div>
     <div class="card-body" style="padding:10px 16px">
       <div class="log-wrap" id="log-wrap">
         <div class="log-entry">
           <span class="log-time">--:--:--</span>
-          <span>Waiting for connection...</span>
+          <span>Bağlantı bekleniyor...</span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- OTA -->
   <div class="card">
-    <div class="card-header">// FIRMWARE UPDATE</div>
+    <div class="card-header">// YAZILIM GÜNCELLEMESİ</div>
     <div class="card-body">
       <div style="font-size:0.72rem;color:var(--muted);margin-bottom:12px;letter-spacing:0.06em;line-height:1.6">
-        Triggers download from configured GitHub URL.<br>
-        Gate stops first. ESP32 reboots after flash (~30s).
+        Yapılandırılan GitHub URL'sinden indirmeyi başlatır.<br>
+        Önce kapı durur. ESP32 yazıldıktan sonra yeniden başlar (~30sn).
       </div>
-      <button class="ota-btn" onclick="triggerOTA()">↑ REMOTE OTA UPDATE</button>
+      <button class="ota-btn" onclick="triggerOTA()">↑ UZAKTAN OTA GÜNCELLEMESİ</button>
     </div>
   </div>
 
-  <!-- Disconnect -->
-  <button class="disconnect-btn" onclick="doDisconnect()">DISCONNECT / CHANGE BROKER</button>
+  <button class="disconnect-btn" onclick="doDisconnect()">BAĞLANTIYI KES / SUNUCUYU DEĞİŞTİR</button>
 
-</div><!-- /app -->
-
-<script>
+</div><script>
 // ════════════════════════════════════════════════════════
 //  State
 // ════════════════════════════════════════════════════════
@@ -690,6 +673,18 @@ const TOPICS = {
   HEARTBEAT: 'gate/heartbeat',
   CONFIG:    'gate/config',
   ANPR:      'gate/anpr/result',
+};
+
+// State Translation Map
+const STATE_TR = {
+  'open': 'AÇIK',
+  'closed': 'KAPALI',
+  'opening': 'AÇILIYOR',
+  'closing': 'KAPANIYOR',
+  'stopped': 'DURDU',
+  'stuck': 'SIKIŞTI',
+  'unknown': 'BİLİNMİYOR',
+  'offline': 'ÇEVRİMDIŞI'
 };
 
 // ════════════════════════════════════════════════════════
@@ -732,7 +727,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Auto-connect if creds saved
   if (c.host && c.user && c.pass) {
-    document.getElementById('connect-error').textContent = 'Reconnecting...';
+    document.getElementById('connect-error').textContent = 'Yeniden bağlanıyor...';
     setTimeout(() => doConnect(), 400);
   }
 });
@@ -744,7 +739,7 @@ function doConnect() {
   const remember = document.getElementById('f-remember').checked;
 
   if (!host || !user || !pass) {
-    document.getElementById('connect-error').textContent = 'All fields required.';
+    document.getElementById('connect-error').textContent = 'Tüm alanlar zorunludur.';
     return;
   }
 
@@ -753,7 +748,7 @@ function doConnect() {
 
   if (remember) saveCreds(cleanHost, user, pass);
 
-  document.getElementById('connect-error').textContent = 'Connecting...';
+  document.getElementById('connect-error').textContent = 'Bağlanıyor...';
   mqttConnect(cleanHost, user, pass);
 }
 
@@ -779,7 +774,7 @@ function mqttConnect(host, user, pass) {
 
   client.onConnectionLost = (resp) => {
     setConnStatus(false);
-    addLog('Connection lost: ' + (resp.errorMessage || 'unknown'));
+    addLog('Bağlantı koptu: ' + (resp.errorMessage || 'bilinmiyor'));
     // Auto-reconnect after 5s
     setTimeout(() => {
       if (!client.isConnected()) mqttConnect(host, user, pass);
@@ -798,7 +793,7 @@ function mqttConnect(host, user, pass) {
       setConnStatus(true);
       document.getElementById('connect-screen').classList.add('hidden');
       document.getElementById('header-host').textContent = host;
-      addLog('Connected to ' + host);
+      addLog('Bağlanıldı: ' + host);
 
       client.subscribe(TOPICS.STATUS);
       client.subscribe(TOPICS.LOG);
@@ -806,7 +801,7 @@ function mqttConnect(host, user, pass) {
     },
     onFailure: (err) => {
       document.getElementById('connect-error').textContent =
-        'Failed: ' + (err.errorMessage || 'Check host and credentials');
+        'Başarısız: ' + (err.errorMessage || 'Sunucu ve bilgileri kontrol edin');
       setConnStatus(false);
     }
   });
@@ -847,7 +842,7 @@ function onMessage(msg) {
 
 function publish(topic, payload) {
   if (!client || !client.isConnected()) {
-    addLog('Not connected — command dropped');
+    addLog('Bağlı değil — komut iptal edildi');
     return;
   }
   const msg = new Paho.MQTT.Message(payload);
@@ -866,13 +861,13 @@ function sendCmd(cmd) {
 
 function setAutoClose() {
   const val = parseInt(document.getElementById('ac-input').value);
-  if (isNaN(val) || val < 0) { addLog('Invalid auto-close value'); return; }
+  if (isNaN(val) || val < 0) { addLog('Geçersiz otomatik kapanma değeri'); return; }
   publish(TOPICS.CONFIG, JSON.stringify({ autoclose: val }));
-  addLog('Auto-close set to ' + val + 's');
+  addLog('Otomatik kapanma süresi: ' + val + 's');
 }
 
 function triggerOTA() {
-  if (!confirm('Start remote OTA firmware update?\n\nGate will stop and ESP32 will reboot after flashing (~30s).')) return;
+  if (!confirm('Uzaktan OTA yazılım güncellemesi başlatılsın mı?\n\nKapı duracak ve ESP32 güncellendikten sonra yeniden başlayacak (~30sn).')) return;
   sendCmd('update');
 }
 
@@ -883,12 +878,12 @@ function addPlate() {
   const inp = document.getElementById('plate-input');
   const raw = inp.value.trim().toUpperCase().replace(/[\s\-]/g, '');
   if (!raw) return;
-  if (plates.includes(raw)) { addLog('Plate already in list: ' + raw); return; }
+  if (plates.includes(raw)) { addLog('Plaka zaten listede: ' + raw); return; }
   plates.push(raw);
   savePlates(plates);
   renderPlates();
   publish(TOPICS.CONFIG, JSON.stringify({ add_plate: raw }));
-  addLog('Plate added: ' + raw);
+  addLog('Plaka eklendi: ' + raw);
   inp.value = '';
 }
 
@@ -897,20 +892,20 @@ function removePlate(plate) {
   savePlates(plates);
   renderPlates();
   publish(TOPICS.CONFIG, JSON.stringify({ remove_plate: plate }));
-  addLog('Plate removed: ' + plate);
+  addLog('Plaka silindi: ' + plate);
 }
 
 function renderPlates() {
   const list = document.getElementById('plate-list');
-  document.getElementById('plate-count').textContent = plates.length + ' PLATE' + (plates.length !== 1 ? 'S' : '');
+  document.getElementById('plate-count').textContent = plates.length + ' PLAKA';
   if (!plates.length) {
-    list.innerHTML = '<div class="plate-empty">No plates registered</div>';
+    list.innerHTML = '<div class="plate-empty">Kayıtlı plaka yok</div>';
     return;
   }
   list.innerHTML = plates.map(p =>
     `<div class="plate-item">
        <span style="letter-spacing:0.12em">${p}</span>
-       <button class="small-btn danger" onclick="removePlate('${p}')">REMOVE</button>
+       <button class="small-btn danger" onclick="removePlate('${p}')">SİL</button>
      </div>`
   ).join('');
 }
@@ -924,9 +919,11 @@ function updateGateState(state) {
   const panel = document.getElementById('status-panel');
   const bar   = document.getElementById('travel-bar');
 
+  const displayState = STATE_TR[state] || state.toUpperCase();
+
   el.className = 'state-value ' + state;
-  el.textContent = state.toUpperCase();
-  panel.setAttribute('data-state', state.toUpperCase());
+  el.textContent = displayState;
+  panel.setAttribute('data-state', displayState);
 
   // Travel progress bar
   clearTimeout(travelTimer);
@@ -974,11 +971,11 @@ function setConnStatus(online) {
   const dot   = document.getElementById('conn-dot');
   const label = document.getElementById('conn-label');
   dot.className   = 'conn-dot' + (online ? ' live' : ' error');
-  label.textContent = online ? 'LIVE' : 'OFFLINE';
+  label.textContent = online ? 'BAĞLI' : 'ÇEVRİMDIŞI';
   if (!online) {
     document.getElementById('state-display').className = 'state-value offline';
-    document.getElementById('state-display').textContent = 'OFFLINE';
-    document.getElementById('status-panel').setAttribute('data-state', 'OFFLINE');
+    document.getElementById('state-display').textContent = 'ÇEVRİMDIŞI';
+    document.getElementById('status-panel').setAttribute('data-state', 'ÇEVRİMDIŞI');
   }
 }
 
@@ -989,9 +986,11 @@ function formatUptime(sec) {
   const h = Math.floor(sec / 3600);
   const m = Math.floor((sec % 3600) / 60);
   const s = sec % 60;
-  if (h > 0) return h + 'h ' + m + 'm';
-  if (m > 0) return m + 'm ' + s + 's';
-  return s + 's';
+  
+  // Format translated to Turkish
+  if (h > 0) return h + 'sa ' + m + 'dk';
+  if (m > 0) return m + 'dk ' + s + 'sn';
+  return s + 'sn';
 }
 
 function escHtml(s) {
