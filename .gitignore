@@ -1,0 +1,4 @@
+# Never commit credentials
+**/config.h
+*.bin
+build/
